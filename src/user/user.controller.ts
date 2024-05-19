@@ -29,14 +29,14 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Get(':id')
-  @ApiCreatedResponse({
-    description: 'resposta da busca de dados privados do usuário',
-    type: User,
-  })
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(+id);
-  }
+  // @Get(':id')
+  // @ApiCreatedResponse({
+  //   description: 'resposta da busca de dados privados do usuário',
+  //   type: User,
+  // })
+  // findOne(@Param('id') id: string) {
+  //   return this.userService.findOne(+id);
+  // }
 
   @Get('user/free-data/:id')
   @ApiCreatedResponse({

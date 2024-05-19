@@ -6,15 +6,21 @@ import {
   HttpCode,
   UseGuards,
   Request,
+  Param,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LogInDto } from './dto/login.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse } from '@nestjs/swagger';
 import { AuthGuard } from './auth.guard';
+import { UserService } from '../user/user.service';
+import { User } from '../user/user.entity';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+  ) {}
 
   @Post('login')
   @HttpCode(200)
@@ -23,11 +29,14 @@ export class AuthController {
   }
 
   //   @UseGuards(AuthGuard)
-  @Get('profile')
+  @Get('user/:id')
+  @ApiCreatedResponse({
+    description: 'resposta da busca de dados privados do usuário',
+    type: User,
+  })
   @UseGuards(AuthGuard)
   @ApiBearerAuth('access-token')
-  getProfile(@Request() req) {
-    console.log(req.headers);
-    return req.user;
+  findOne(@Param('id') id: string) {
+    return this.userService.findOne(+id);
   }
 }
